@@ -16,7 +16,7 @@ func main() {
 			// Проверяем, что ContentType запроса text/plain
 			// Если это не так, то возвращает код ошибки 400
 			if r.Header.Get("Content-Type") != "text/plain" {
-				http.Error(w, "Invalid Content-Type, expected text/plain", http.StatusBadRequest)
+				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
 
@@ -24,7 +24,7 @@ func main() {
 			body, err := io.ReadAll(r.Body)
 			defer r.Body.Close()
 			if err != nil {
-				http.Error(w, "Error reading request body", http.StatusInternalServerError)
+				w.WriteHeader(http.StatusBadRequest)
 			}
 
 			// Преобразуем тело запроса в строку, сокращаем URL и сохраняем его
@@ -43,11 +43,12 @@ func main() {
 				w.WriteHeader(http.StatusTemporaryRedirect)
 				return
 			}
-			http.Error(w, "URL not found", http.StatusNotFound)
+			w.WriteHeader(http.StatusBadRequest)
+			return
 
 		default:
 			// На любой некорректный запрос сервер должен возвращать ответ с кодом 400
-			http.Error(w, "Invalid request method", http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
 		}
 	})
 
