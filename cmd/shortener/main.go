@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Tarasusrus/url-shortener/internal/app"
 	"io"
+	"mime"
 	"net/http"
 	"strings"
 )
@@ -15,7 +16,14 @@ func main() {
 		case http.MethodPost:
 			// Проверяем, что ContentType запроса text/plain
 			// Если это не так, то возвращает код ошибки 400
-			if r.Header.Get("Content-Type") != "text/plain" {
+			mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+			if err != nil {
+				// Возвращаем ошибку, если не можем парсить.MediaType
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			if mediaType != "text/plain" {
+				// Возвращаем ошибку, если MediaType не "text/plain"
 				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
