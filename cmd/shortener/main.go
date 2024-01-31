@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/Tarasusrus/url-shortener/internal/app"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -21,7 +21,7 @@ func main() {
 			}
 
 			// Читаем тело запроса
-			body, err := ioutil.ReadAll(r.Body)
+			body, err := io.ReadAll(r.Body)
 			defer r.Body.Close()
 			if err != nil {
 				http.Error(w, "Error reading request body", http.StatusInternalServerError)
