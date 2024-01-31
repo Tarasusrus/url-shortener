@@ -47,10 +47,12 @@ func (s *Store) Get(id string) (string, bool) {
 // Функция для генерации случайного идентификатора из заданного набора символов (charset).
 // Идентификатор генерируется как строка длиной 10 символов.
 func generateID() string {
-	rand.Seed(time.Now().UnixNano())
+	s := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(s)
+
 	b := make([]byte, 10)
 	for i := range b {
-		b[i] = charset[rand.Intn(len(charset))]
+		b[i] = charset[r.Intn(len(charset))]
 	}
 	return string(b)
 }
