@@ -15,6 +15,7 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 	// Если это не так, то возвращает код ошибки 400
 	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil || mediaType != "text/plain" {
+		log.Printf("Error parsing media type or media type is not text/plain: %v\n", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -22,6 +23,7 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 	body, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
+		log.Printf("Error reading request body: %v\n", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -29,6 +31,7 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 	// Преобразуем тело запроса в строку, сокращаем URL и сохраняем его
 	url := string(body)
 	id := store.Set(url)
+	log.Printf("Short URL created: %s\n", id)
 
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
@@ -37,13 +40,20 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 
 // handleGet обрабатывает GET-запросы
 func handleGet(w http.ResponseWriter, r *http.Request, store *app.Store) {
+	log.Printf("Received request from: %s", r.RemoteAddr)
 	id := strings.TrimPrefix(r.URL.Path, "/")
+	log.Printf("Received ID: %s", id)
+
 	url, ok := store.Get(id)
+	log.Printf("Retrieved URL: %s, Found: %v", url, ok)
+
 	if ok {
 		w.Header().Set("Location", url)
 		w.WriteHeader(http.StatusTemporaryRedirect)
+		log.Printf("Redirecting to: %s", url)
 		return
 	}
+	log.Printf("URL not found for ID: %s, Responding with BadRequest", id)
 	w.WriteHeader(http.StatusBadRequest)
 }
 
