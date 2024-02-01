@@ -73,13 +73,13 @@ func main() {
 	store := app.NewStore()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
-		case http.MethodPost:
-			handlePost(w, r, store)
 		case http.MethodGet:
 			handleGet(w, r, store)
-		default:
-			// На любой некорректный запрос сервер должен возвращать ответ с кодом 400
-			w.WriteHeader(http.StatusBadRequest)
+		case http.MethodPost:
+			handlePost(w, r, store)
+			//default:
+			//	// На любой некорректный запрос сервер должен возвращать ответ с кодом 400
+			//	w.WriteHeader(http.StatusBadRequest)
 		}
 	})
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
