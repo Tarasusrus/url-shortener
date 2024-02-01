@@ -41,7 +41,8 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(id))
+	urlPath := "http://localhost:8080/" + id
+	w.Write([]byte(urlPath))
 }
 
 // handleGet обрабатывает GET-запросы
@@ -77,9 +78,9 @@ func main() {
 			handleGet(w, r, store)
 		case http.MethodPost:
 			handlePost(w, r, store)
-			//default:
-			//	// На любой некорректный запрос сервер должен возвращать ответ с кодом 400
-			//	w.WriteHeader(http.StatusBadRequest)
+		default:
+			// На любой некорректный запрос сервер должен возвращать ответ с кодом 400
+			w.WriteHeader(http.StatusBadRequest)
 		}
 	})
 	log.Fatal(http.ListenAndServe("localhost:8080", nil))
