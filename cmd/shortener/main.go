@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Tarasusrus/url-shortener/internal/app"
 	"io"
+	"log"
 	"mime"
 	"net/http"
 	"strings"
@@ -59,5 +60,5 @@ func main() {
 			w.WriteHeader(http.StatusBadRequest)
 		}
 	})
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
