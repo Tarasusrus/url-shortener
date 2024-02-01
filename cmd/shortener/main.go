@@ -27,6 +27,12 @@ func handlePost(w http.ResponseWriter, r *http.Request, store *app.Store) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	log.Println(len(body))
+	if len(body) == 0 {
+		log.Printf("Received empty request body\n")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	// Преобразуем тело запроса в строку, сокращаем URL и сохраняем его
 	url := string(body)
