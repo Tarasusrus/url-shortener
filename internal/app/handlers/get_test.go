@@ -28,7 +28,20 @@ func TestHandleGet(t *testing.T) {
 		args args
 	}{
 		{
-			name: "Test case 1",
+			name: "Test case 1 - URL not found for ID",
+			args: args{
+				w:     httptest.NewRecorder(),
+				r:     httptest.NewRequest("GET", "/ajdbkl", nil),
+				store: stores.NewStore(),
+			},
+			want: want{
+				body:       "",
+				statusCode: 400,
+			},
+		},
+
+		{
+			name: "Test case 2 - Empty ID received",
 			args: args{
 				w:     httptest.NewRecorder(),
 				r:     httptest.NewRequest("GET", "/", nil),
@@ -37,6 +50,19 @@ func TestHandleGet(t *testing.T) {
 			want: want{
 				body:       "",
 				statusCode: 400,
+			},
+		},
+
+		{
+			name: "Test case 3 - URL found for ID",
+			args: args{
+				w:     httptest.NewRecorder(),
+				r:     httptest.NewRequest("GET", "/test-id", nil),
+				store: &stores.Store{Urls: map[string]string{"test-id": "http://example.com"}},
+			},
+			want: want{
+				body:       "",
+				statusCode: 307,
 			},
 		},
 	}
