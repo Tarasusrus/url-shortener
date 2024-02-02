@@ -1,4 +1,4 @@
-package app
+package stores
 
 // Импортируем нужные нам пакеты
 import (
