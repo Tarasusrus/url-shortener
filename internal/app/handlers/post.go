@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"io"
 	"log"
@@ -38,8 +39,13 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	id := store.Set(url)
 	log.Printf("Short URL created: %s\n", id)
 
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
-	urlPath := "http://localhost:8080/" + id
+	urlPath := fmt.Sprintf("%s://%s/%s", scheme, r.Host, id)
 	w.Write([]byte(urlPath))
 }
