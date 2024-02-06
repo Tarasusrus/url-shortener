@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/handlers"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"net/http"
@@ -25,8 +26,9 @@ func TestHandleGet(t *testing.T) {
 }
 
 func TestHandlePost(t *testing.T) {
+	config := configs.NewFlagConfig()
 	store := stores.NewStore() // Хранилище для теста
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { handlers.HandlePost(w, r, store) }))
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { handlers.HandlePost(w, r, store, config) }))
 	defer server.Close()
 
 	reqBody := "http://example.com"

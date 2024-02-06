@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/handlers"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 
 func Run() {
 	store := stores.NewStore()
+	config := configs.NewFlagConfig()
 
 	r := gin.Default()
 
@@ -16,7 +18,7 @@ func Run() {
 		handlers.HandleGet(c.Writer, c.Request, store)
 	})
 	r.POST("/", func(c *gin.Context) {
-		handlers.HandlePost(c.Writer, c.Request, store)
+		handlers.HandlePost(c.Writer, c.Request, store, config)
 	})
 	//http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	//	switch r.Method {
@@ -28,5 +30,5 @@ func Run() {
 	//		w.WriteHeader(http.StatusBadRequest) // На любой некорректный запрос сервер должен возвращать ответ с кодом 400
 	//	}
 	//})
-	log.Fatal(r.Run(":8080"))
+	log.Fatal(r.Run(config.Address()))
 }

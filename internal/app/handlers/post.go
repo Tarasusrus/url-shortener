@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"io"
 	"log"
@@ -10,7 +11,7 @@ import (
 )
 
 // HandlePost обрабатывает POST-запросы
-func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
+func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store, config *configs.FlagConfig) {
 	// Проверяем, что ContentType запроса text/plain
 	// Если это не так, то возвращает код ошибки 400
 	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
@@ -43,9 +44,10 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	if r.TLS != nil {
 		scheme = "https"
 	}
+	host := config.Address()
 
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
-	urlPath := fmt.Sprintf("%s://%s/%s", scheme, r.Host, id)
+	urlPath := fmt.Sprintf("%s://%s/%s", scheme, host, id)
 	w.Write([]byte(urlPath))
 }
