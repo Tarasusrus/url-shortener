@@ -44,8 +44,10 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	//	scheme = "https"
 	//}
 	config := configs.NewFlagConfig()
+	baseUrl := config.BaseURL()
+	shortURL := baseUrl + id
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
 	//urlPath := fmt.Sprintf("%s://%s/%s", scheme, r.Host, id)
-	w.Write([]byte(config.BaseURL()))
+	w.Write([]byte(shortURL))
 }

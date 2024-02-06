@@ -15,7 +15,7 @@ func NewFlagConfig() *FlagConfig {
 		"Флаг -a отвечает за адрес запуска HTTP-сервера (значение может быть таким: localhost:8888)")
 	flag.StringVar(&c.baseURL,
 		"b",
-		"http://localhost:8080/qsd54gFg",
+		"http://localhost:8080/",
 		"Флаг -b отвечает за базовый адрес результирующего сокращённого URL "+
 			"(значение: адрес сервера перед коротким URL, например http://localhost:8000/)")
 	flag.Parse()
