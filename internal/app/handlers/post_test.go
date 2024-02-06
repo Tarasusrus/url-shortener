@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 )
 
 func TestHandlePost(t *testing.T) {
+	config := configs.NewFlagConfig()
 	type args struct {
 		w     *httptest.ResponseRecorder
 		r     *http.Request
@@ -67,7 +69,7 @@ func TestHandlePost(t *testing.T) {
 		req.Header.Set("Content-Type", "text/plain")
 
 		t.Run(tt.name, func(t *testing.T) {
-			HandlePost(tt.args.w, tt.args.r, tt.args.store)
+			HandlePost(tt.args.w, tt.args.r, tt.args.store, config)
 			assert.Equal(t, tt.want.statusCode, tt.args.w.Code)
 		})
 	}
