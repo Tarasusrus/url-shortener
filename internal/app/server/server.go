@@ -18,7 +18,7 @@ func Run() {
 		handlers.HandleGet(c.Writer, c.Request, store)
 	})
 	r.POST("/", func(c *gin.Context) {
-		handlers.HandlePost(c.Writer, c.Request, store)
+		handlers.HandlePost(c.Writer, c.Request, store, config)
 	})
 	//http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	//	switch r.Method {

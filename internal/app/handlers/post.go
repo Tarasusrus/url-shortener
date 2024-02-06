@@ -10,7 +10,7 @@ import (
 )
 
 // HandlePost обрабатывает POST-запросы
-func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
+func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store, config *configs.FlagConfig) {
 	// Проверяем, что ContentType запроса text/plain
 	// Если это не так, то возвращает код ошибки 400
 	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
@@ -43,7 +43,6 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	//if r.TLS != nil {
 	//	scheme = "https"
 	//}
-	config := configs.NewFlagConfig()
 	baseURL := config.BaseURL()
 	shortURL := baseURL + id
 	// Отправляем ответ с кодом 201 и сокращенным URL
