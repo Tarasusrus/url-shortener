@@ -21,6 +21,7 @@ func TestHandleGet(t *testing.T) {
 	if res.StatusCode != http.StatusBadRequest {
 		t.Errorf("Expected status code BadRequest, got : %v", res.StatusCode)
 	}
+	defer res.Body.Close()
 }
 
 func TestHandlePost(t *testing.T) {
@@ -36,4 +37,5 @@ func TestHandlePost(t *testing.T) {
 	if res.StatusCode != http.StatusCreated {
 		t.Errorf("Expected status code Created, got : %v", res.StatusCode)
 	}
+	defer res.Body.Close()
 }
