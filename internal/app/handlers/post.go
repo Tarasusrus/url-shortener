@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"io"
 	"log"
@@ -39,13 +39,13 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	id := store.Set(url)
 	log.Printf("Short URL created: %s\n", id)
 
-	scheme := "http"
-	if r.TLS != nil {
-		scheme = "https"
-	}
-
+	//scheme := "http"
+	//if r.TLS != nil {
+	//	scheme = "https"
+	//}
+	config := configs.NewFlagConfig()
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)
-	urlPath := fmt.Sprintf("%s://%s/%s", scheme, r.Host, id)
-	w.Write([]byte(urlPath))
+	//urlPath := fmt.Sprintf("%s://%s/%s", scheme, r.Host, id)
+	w.Write([]byte(config.BaseURL()))
 }
