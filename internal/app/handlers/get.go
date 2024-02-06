@@ -12,7 +12,6 @@ func HandleGet(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	log.Printf("Received request from: %s", r.RemoteAddr)
 	id := strings.TrimPrefix(r.URL.Path, "/")
 	log.Printf("Received ID: %s", id)
-
 	if id == "" {
 		log.Printf("Empty ID received, responding with BadRequest")
 		w.WriteHeader(http.StatusBadRequest)
