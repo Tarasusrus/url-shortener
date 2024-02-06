@@ -4,7 +4,7 @@ import "flag"
 
 type FlagConfig struct {
 	address string
-	baseUrl string
+	baseURL string
 }
 
 func NewFlagConfig() *FlagConfig {
@@ -13,7 +13,7 @@ func NewFlagConfig() *FlagConfig {
 		"a",
 		"localhost:8080",
 		"Флаг -a отвечает за адрес запуска HTTP-сервера (значение может быть таким: localhost:8888)")
-	flag.StringVar(&c.baseUrl,
+	flag.StringVar(&c.baseURL,
 		"b",
 		"http://localhost:8080/qsd54gFg",
 		"Флаг -b отвечает за базовый адрес результирующего сокращённого URL "+
@@ -27,5 +27,5 @@ func (c *FlagConfig) Address() string {
 }
 
 func (c *FlagConfig) BaseURL() string {
-	return c.baseUrl
+	return c.baseURL
 }
