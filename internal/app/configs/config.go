@@ -7,17 +7,17 @@ import (
 )
 
 type FlagConfig struct {
-	address string `env:"SERVER_ADDRESS"`
-	baseURL string `env:"BASE_URL"`
+	Address string `env:"SERVER_ADDRESS"`
+	BaseURL string `env:"BASE_URL"`
 }
 
 func NewFlagConfig() *FlagConfig {
 	c := new(FlagConfig)
-	flag.StringVar(&c.address,
+	flag.StringVar(&c.Address,
 		"a",
 		"localhost:8080",
 		"Флаг -a отвечает за адрес запуска HTTP-сервера (значение может быть таким: localhost:8888)")
-	flag.StringVar(&c.baseURL,
+	flag.StringVar(&c.BaseURL,
 		"b",
 		"http://localhost:8080/",
 		"Флаг -b отвечает за базовый адрес результирующего сокращённого URL "+
@@ -32,10 +32,10 @@ func NewFlagConfig() *FlagConfig {
 	return c
 }
 
-func (c *FlagConfig) Address() string {
-	return c.address
+func (c *FlagConfig) GetAddress() string {
+	return c.Address
 }
 
-func (c *FlagConfig) BaseURL() string {
-	return c.baseURL
+func (c *FlagConfig) GetBaseURL() string {
+	return c.BaseURL
 }
