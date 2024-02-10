@@ -1,10 +1,14 @@
 package configs
 
-import "flag"
+import (
+	"flag"
+	"github.com/caarlos0/env"
+	"log"
+)
 
 type FlagConfig struct {
-	address string
-	baseURL string
+	address string `env:"SERVER_ADDRESS"`
+	baseURL string `env:"BASE_URL"`
 }
 
 func NewFlagConfig() *FlagConfig {
@@ -19,6 +23,12 @@ func NewFlagConfig() *FlagConfig {
 		"Флаг -b отвечает за базовый адрес результирующего сокращённого URL "+
 			"(значение: адрес сервера перед коротким URL, например http://localhost:8000/)")
 	flag.Parse()
+	// Если указана переменная окружения, она будет переопределить значение флага
+	err := env.Parse(c)
+	if err != nil {
+		// обработка ошибок при разборе переменных окружения
+		log.Fatal(err)
+	}
 	return c
 }
 
