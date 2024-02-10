@@ -30,5 +30,5 @@ func Run() {
 	//		w.WriteHeader(http.StatusBadRequest) // На любой некорректный запрос сервер должен возвращать ответ с кодом 400
 	//	}
 	//})
-	log.Fatal(r.Run(config.Address()))
+	log.Fatal(r.Run(config.GetAddress()))
 }

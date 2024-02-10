@@ -44,7 +44,7 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store, con
 	if r.TLS != nil {
 		scheme = "https"
 	}
-	host := config.Address()
+	host := config.GetAddress()
 
 	// Отправляем ответ с кодом 201 и сокращенным URL
 	w.WriteHeader(http.StatusCreated)

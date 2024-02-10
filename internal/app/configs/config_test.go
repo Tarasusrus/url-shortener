@@ -12,13 +12,13 @@ func TestNewFlagConfig(t *testing.T) {
 
 	config := NewFlagConfig()
 
-	address := config.Address()
+	address := config.GetAddress()
 	if address != "127.0.0.1:8888" {
-		t.Errorf("Address was incorrect, got: %s, want: %s", address, "127.0.0.1:8888")
+		t.Errorf("GetAddress was incorrect, got: %s, want: %s", address, "127.0.0.1:8888")
 	}
 
-	baseURL := config.BaseURL()
+	baseURL := config.GetBaseURL()
 	if baseURL != "http://example.com/" {
-		t.Errorf("BaseURL was incorrect, got: %s, want: %s", baseURL, "http://example.com/")
+		t.Errorf("GetBaseURL was incorrect, got: %s, want: %s", baseURL, "http://example.com/")
 	}
 }
