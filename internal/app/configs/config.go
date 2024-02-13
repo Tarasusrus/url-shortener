@@ -32,10 +32,12 @@ func NewFlagConfig() (*FlagConfig, error) {
 	return c, nil
 }
 
+// GetAddress возвращает адрес сервера из конфигурации
 func (c *FlagConfig) GetAddress() string {
 	return c.Address
 }
 
+// GetBaseURL возвращает базовый URL из конфигурации
 func (c *FlagConfig) GetBaseURL() string {
 	return c.BaseURL
 }
