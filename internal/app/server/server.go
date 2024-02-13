@@ -10,7 +10,7 @@ import (
 
 func Run() {
 	store := stores.NewStore()
-	config := configs.NewFlagConfig()
+	config, _ := configs.NewFlagConfig()
 
 	r := gin.Default()
 

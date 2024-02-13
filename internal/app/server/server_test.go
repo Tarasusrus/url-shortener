@@ -26,7 +26,7 @@ func TestHandleGet(t *testing.T) {
 }
 
 func TestHandlePost(t *testing.T) {
-	config := configs.NewFlagConfig()
+	config, _ := configs.NewFlagConfig()
 	store := stores.NewStore() // Хранилище для теста
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { handlers.HandlePost(w, r, store, config) }))
 	defer server.Close()

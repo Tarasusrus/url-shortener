@@ -11,7 +11,7 @@ import (
 )
 
 func TestHandlePost(t *testing.T) {
-	config := configs.NewFlagConfig()
+	config, _ := configs.NewFlagConfig()
 	type args struct {
 		w     *httptest.ResponseRecorder
 		r     *http.Request
