@@ -1,24 +1,21 @@
 package configs
 
 import (
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
 
 func TestNewFlagConfig(t *testing.T) {
-	// установим значения флагов для тестирования
+	// Set flag values for testing
 	os.Args = append(os.Args, "-a=127.0.0.1:8888")
 	os.Args = append(os.Args, "-b=http://example.com/")
 
-	config := NewFlagConfig()
+	config, _ := NewFlagConfig()
 
 	address := config.GetAddress()
-	if address != "127.0.0.1:8888" {
-		t.Errorf("GetAddress was incorrect, got: %s, want: %s", address, "127.0.0.1:8888")
-	}
+	assert.Equal(t, address, "127.0.0.1:8888", "GetAddress was incorrect")
 
 	baseURL := config.GetBaseURL()
-	if baseURL != "http://example.com/" {
-		t.Errorf("GetBaseURL was incorrect, got: %s, want: %s", baseURL, "http://example.com/")
-	}
+	assert.Equal(t, baseURL, "http://example.com/", "GetBaseURL was incorrect")
 }
