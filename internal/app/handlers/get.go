@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// HandleGet обрабатывает GET-запросы
+// HandleGet обрабатывает GET-запросы.
 func HandleGet(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	log.Printf("Received request from: %s", r.RemoteAddr)
 	id := strings.TrimPrefix(r.URL.Path, "/")
