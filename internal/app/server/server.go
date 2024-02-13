@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/Tarasusrus/url-shortener/helpers"
 	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/handlers"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
@@ -10,7 +11,10 @@ import (
 
 func Run() {
 	store := stores.NewStore()
-	config, _ := configs.NewFlagConfig()
+	config, err := configs.NewFlagConfig()
+	if err != nil {
+		helpers.LogError(err)
+	}
 
 	r := gin.Default()
 
