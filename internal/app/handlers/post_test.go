@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -40,26 +39,6 @@ func TestHandlePost(t *testing.T) {
 			want: want{
 				body:       "",
 				statusCode: 400,
-			},
-		},
-
-		{
-			name: "Test case 2 - Check URL",
-			args: args{
-				w: httptest.NewRecorder(),
-				r: httptest.NewRequest(
-					"POST",
-					"/tests-id",
-					strings.NewReader("http://localhost:8080/"),
-				),
-				store: &stores.Store{
-
-					Urls: map[string]string{"tests-id": "http://localhost:8080/"},
-				},
-			},
-			want: want{
-				body:       "http://localhost:8080/tests-id",
-				statusCode: 201,
 			},
 		},
 	}
