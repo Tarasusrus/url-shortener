@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// HandleGet обрабатывает GET-запросы
+// HandleGet обрабатывает GET-запросы.
 func HandleGet(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	log.Printf("Received request from: %s", r.RemoteAddr)
 	id := strings.TrimPrefix(r.URL.Path, "/")
@@ -21,12 +21,13 @@ func HandleGet(w http.ResponseWriter, r *http.Request, store *stores.Store) {
 	url, ok := store.Get(id)
 	log.Printf("Retrieved URL: %s, Found: %v", url, ok)
 
-	if ok {
-		w.Header().Set("Location", url)
-		w.WriteHeader(http.StatusTemporaryRedirect)
-		log.Printf("Redirecting to: %s", url)
+	if !ok {
+		log.Printf("URL not found for ID: %s, Responding with BadRequest", id)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	log.Printf("URL not found for ID: %s, Responding with BadRequest", id)
-	w.WriteHeader(http.StatusBadRequest)
+
+	w.Header().Set("Location", url)
+	w.WriteHeader(http.StatusTemporaryRedirect)
+	log.Printf("Redirecting to: %s", url)
 }

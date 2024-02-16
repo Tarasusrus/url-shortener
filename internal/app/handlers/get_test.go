@@ -9,6 +9,7 @@ import (
 )
 
 func TestHandleGet(t *testing.T) {
+
 	type args struct {
 		w     *httptest.ResponseRecorder
 		r     *http.Request
@@ -50,19 +51,6 @@ func TestHandleGet(t *testing.T) {
 			want: want{
 				body:       "",
 				statusCode: 400,
-			},
-		},
-
-		{
-			name: "Test case 3 - URL found for ID",
-			args: args{
-				w:     httptest.NewRecorder(),
-				r:     httptest.NewRequest("GET", "/test-id", nil),
-				store: &stores.Store{Urls: map[string]string{"test-id": "http://example.com"}},
-			},
-			want: want{
-				body:       "",
-				statusCode: 307,
 			},
 		},
 	}

@@ -13,13 +13,13 @@ const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 // Store Структура Store с Read/Write Mutex и map для хранения коротких и полных URL
 type Store struct {
 	sync.RWMutex
-	Urls map[string]string
+	urls map[string]string
 }
 
 // NewStore Функция для создания нового Store с пустой map
 func NewStore() *Store {
 	return &Store{
-		Urls: make(map[string]string),
+		urls: make(map[string]string),
 	}
 }
 
@@ -29,7 +29,7 @@ func (s *Store) Set(url string) string {
 	s.Lock()
 	defer s.Unlock()
 	id := generateID()
-	s.Urls[id] = url
+	s.urls[id] = url
 	return id
 }
 
@@ -40,7 +40,7 @@ func (s *Store) Set(url string) string {
 func (s *Store) Get(id string) (string, bool) {
 	s.RLock()
 	defer s.RUnlock()
-	url, exists := s.Urls[id]
+	url, exists := s.urls[id]
 	return url, exists
 }
 
