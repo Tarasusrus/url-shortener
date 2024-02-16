@@ -23,12 +23,12 @@ func HandlePost(w http.ResponseWriter, r *http.Request, store *stores.Store, con
 	}
 
 	body, err := io.ReadAll(r.Body)
-	defer r.Body.Close()
 	if err != nil {
 		helpers.LogError(err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	defer r.Body.Close()
 	log.Println(len(body))
 	if len(body) == 0 {
 		log.Printf("Received empty request body\n")
