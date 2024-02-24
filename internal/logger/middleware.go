@@ -16,7 +16,7 @@ func RequestLoggerMiddleware() gin.HandlerFunc {
 		c.Next()
 
 		// Вычисляем продолжительность обработки запроса
-		latency := time.Now().Sub(startTime)
+		latency := time.Since(startTime)
 		statusCode := c.Writer.Status()
 		responseSize := c.Writer.Size()
 
