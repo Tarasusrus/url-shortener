@@ -1,23 +1,21 @@
 package server
 
 import (
-	"github.com/Tarasusrus/url-shortener/helpers"
+	"fmt"
 	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/handlers"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"github.com/Tarasusrus/url-shortener/internal/logger"
 	"github.com/gin-gonic/gin"
-	"log"
 )
 
-func Run() {
+func Run() error {
 	config, err := configs.NewFlagConfig()
 	if err != nil {
-		helpers.LogError(err)
+		return fmt.Errorf("failed to load flag config: %w", err)
 	}
-	err = logger.Initialize(config.LogLevel)
-	if err != nil {
-		log.Fatalf("Failed to initialize logger: %v", err)
+	if err := logger.Initialize(config.LogLevel); err != nil {
+		return fmt.Errorf("failed to initialize logger: %w", err)
 	}
 	store := stores.NewStore()
 	r := gin.Default()
@@ -32,5 +30,8 @@ func Run() {
 		handlers.HandlePost(c.Writer, c.Request, store, config)
 	})
 
-	log.Fatal(r.Run(config.GetAddress()))
+	if err := r.Run(config.GetAddress()); err != nil {
+		return fmt.Errorf("failed to run server: %w", err)
+	}
+	return nil
 }
