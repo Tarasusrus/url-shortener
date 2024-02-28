@@ -36,7 +36,7 @@ func easyjson4d2b3e93DecodeGithubComTarasusrusUrlShortenerInternalAppModels(in *
 			continue
 		}
 		switch key {
-		case "shortURL":
+		case "result":
 			out.ShortURL = string(in.String())
 		default:
 			in.SkipRecursive()
@@ -53,7 +53,7 @@ func easyjson4d2b3e93EncodeGithubComTarasusrusUrlShortenerInternalAppModels(out 
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"shortURL\":"
+		const prefix string = ",\"result\":"
 		out.RawString(prefix[1:])
 		out.String(string(in.ShortURL))
 	}
