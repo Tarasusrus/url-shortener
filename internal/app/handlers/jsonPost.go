@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/models"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
@@ -44,7 +45,16 @@ func HandleJSONPost(writer gin.ResponseWriter, request *http.Request, store *sto
 	shortURLId := store.Set(req.URL)
 	logger.Log.Info("Short URL created", zap.String("shortURLId", shortURLId))
 
-	resp := models.ShortenResponse{ShortURL: shortURLId}
+	scheme := "http"
+
+	if request.TLS != nil {
+		scheme = "https"
+	}
+
+	host := config.GetAddress()
+	fullURL := fmt.Sprintf("%s://%s/%s", scheme, host, shortURLId)
+
+	resp := models.ShortenResponse{ShortURL: fullURL}
 
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusCreated)
