@@ -24,6 +24,7 @@ func HandlePost(
 	// Проверка ContentType на соответствие text/plain.
 	mediaType, _, err := mime.ParseMediaType(request.Header.Get("Content-Type"))
 
+	//todo вынести в функцию повторяющийся код.
 	if err != nil || mediaType != "text/plain" {
 		logger.Log.Info("Invalid content type", zap.Error(err))
 		responseWriter.WriteHeader(http.StatusBadRequest)

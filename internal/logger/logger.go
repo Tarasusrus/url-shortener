@@ -45,12 +45,12 @@ func Initialize(level string) error {
 }
 
 // RequestLogger — middleware-логер для входящих HTTP-запросов.
-func RequestLogger(handler http.HandlerFunc) http.Handler {
+func RequestLogger(h http.HandlerFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		Log.Debug("got incoming HTTP request",
 			zap.String("method", r.Method),
 			zap.String("path", r.URL.Path),
 		)
-		handler(w, r)
+		h(w, r)
 	})
 }

@@ -40,6 +40,9 @@ func Run() error {
 	router.POST("/", func(c *gin.Context) {
 		handlers.HandlePost(c.Writer, c.Request, store, config)
 	})
+	router.POST("/api/shorten", func(c *gin.Context) {
+		handlers.HandleJSONPost(c.Writer, c.Request, store, config)
+	})
 
 	if err := router.Run(config.GetAddress()); err != nil {
 		return fmt.Errorf("failed to run server: %w", err)
