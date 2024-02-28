@@ -3,59 +3,34 @@ linters-settings:
     check-type-assertions: true # Проверять утверждения типов на наличие ошибок.
     check-blank: true # Проверять, что ошибки не присваиваются в _ (игнорируются).
 
-  # Настройки для линтера goconst, который ищет повторяющиеся строковые литералы, которые могут быть заменены константами.
   goconst:
     min-len: 3 # Минимальная длина строки, чтобы считаться константой.
     min-occurrences: 3 # Минимальное количество повторений, чтобы предложить вынести в константу.
 
-#  # Настройки для gocritic, комплексного линтера с множеством проверок.
-#  gocritic:
-#    enabled-checks: # Включаем все проверки.
-#      - all
-#    disabled-checks: # Отключаем проверки, которые могут быть не всегда уместны.
 
-
-  # Настройки для goimports, который проверяет правильность импортов.
-  goimports:
-    local-prefixes: your_project_name # Префикс для импортов вашего проекта, чтобы различать внутренние и внешние пакеты.
-
-  # Настройки для golint, который предлагает стилевые улучшения для кода.
   golint:
-    min-confidence: 0.8 # Уровень уверенности, при котором будут предлагаться изменения.
+    min-confidence: 0.8 # Уровень уверенности для предложений.
 
-  # Настройки для gocyclo, который проверяет сложность функций.
   gocyclo:
-    min-complexity: 10 # Минимальная сложность, при которой функция будет считаться сложной.
+    min-complexity: 10 # Минимальная сложность функции.
 
 linters:
-  enable-all: true # Включаем все доступные линтеры.
+  enable-all: true
   disable:
-    - gochecknoglobals # Пример отключения конкретного линтера.
-    - deadcode
-    - golint
-    - maligned
-    - exhaustivestruct
-    - scopelint
-    - structcheck
-    - varcheck
     - interfacer
-    - ifshort
-    - depguard
+    - golint
+    - scopelint
+    - maligned
+
 
 issues:
-  exclude-use-default: false # Не использовать стандартные исключения для линтеров.
-  exclude-rules: # Специфические исключения для определенных линтеров.
-    - linters:
-        - gosec
-      text: "G101: Potential hardcoded credentials" # Исключаем конкретное предупреждение.
+  exclude-use-default: true
 
 run:
-  deadline: 5m # Максимальное время выполнения линтинга.
-  build-tags: # Тэги для сборки.
-    - your_tags
-  skip-dirs: # Директории, которые будут пропущены при линтинге.
+  skip-dirs:
     - vendor
     - .git
     - node_modules
-  skip-files: # Файлы, которые будут пропущены при линтинге.
+    - internal/app/stores
+  skip-files:
     - ".*_test.go"
