@@ -1,0 +1,36 @@
+linters-settings:
+  errcheck:
+    check-type-assertions: true # Проверять утверждения типов на наличие ошибок.
+    check-blank: true # Проверять, что ошибки не присваиваются в _ (игнорируются).
+
+  goconst:
+    min-len: 3 # Минимальная длина строки, чтобы считаться константой.
+    min-occurrences: 3 # Минимальное количество повторений, чтобы предложить вынести в константу.
+
+
+  golint:
+    min-confidence: 0.8 # Уровень уверенности для предложений.
+
+  gocyclo:
+    min-complexity: 10 # Минимальная сложность функции.
+
+linters:
+  enable-all: true
+  disable:
+    - interfacer
+    - golint
+    - scopelint
+    - maligned
+
+
+issues:
+  exclude-use-default: true
+
+run:
+  skip-dirs:
+    - vendor
+    - .git
+    - node_modules
+    - internal/app/stores
+  skip-files:
+    - ".*_test.go"
