@@ -1,6 +1,10 @@
 package logger
 
 import (
+	"compress/gzip"
+	"io"
+	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -30,4 +34,43 @@ func RequestLoggerMiddleware() gin.HandlerFunc {
 			zap.Duration("latency", latency),
 		)
 	}
+}
+
+func GzipDecodeMiddleware(c *gin.Context) {
+	if c.GetHeader("Content-Encoding") == "gzip" {
+		reader, err := gzip.NewReader(c.Request.Body)
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		c.Request.Body = reader
+		c.Next()
+	} else {
+		c.Next()
+	}
+}
+
+func GzipEncodeMiddleware(c *gin.Context) {
+	if strings.Contains(c.GetHeader("Accept-Encoding"), "gzip") {
+		// Создаем gzip writer
+		gz := gzip.NewWriter(c.Writer)
+		defer gz.Close()
+
+		// Заменяем writer контекста на gzip writer
+		c.Writer = &gzipResponseWriter{Writer: gz, ResponseWriter: c.Writer}
+
+		// Установка заголовка Content-Encoding
+		c.Header("Content-Encoding", "gzip")
+	}
+	c.Next()
+}
+
+type gzipResponseWriter struct {
+	gin.ResponseWriter
+	Writer io.Writer
+}
+
+// Переопределение метода Write, чтобы использовать gzip.Writer
+func (g *gzipResponseWriter) Write(data []byte) (int, error) {
+	return g.Writer.Write(data)
 }

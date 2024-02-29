@@ -33,6 +33,8 @@ func Run() error {
 
 	// Регистрация middleware
 	router.Use(logger.RequestLoggerMiddleware())
+	router.Use(logger.GzipDecodeMiddleware)
+	router.Use(logger.GzipEncodeMiddleware)
 
 	router.GET("/:id", func(c *gin.Context) {
 		handlers.HandleGet(c.Writer, c.Request, store)
