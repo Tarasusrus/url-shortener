@@ -22,12 +22,21 @@ import (
 func HandlePost(
 	responseWriter http.ResponseWriter, request *http.Request, store *stores.Store, config *configs.FlagConfig) {
 	// Проверка ContentType на соответствие text/plain.
+	// Проверка ContentType на соответствие text/plain или application/x-gzip.
 	mediaType, _, err := mime.ParseMediaType(request.Header.Get("Content-Type"))
+	if err != nil {
+		logger.Log.Debug("Invalid content type",
+			zap.Error(err),
+			zap.String("expected", "text/plain or application/x-gzip"),
+			zap.String("got", mediaType))
+	}
 
-	//todo вынести в функцию повторяющийся код.
-	if err != nil || mediaType != "text/plain" {
-		logger.Log.Info("Invalid content type", zap.Error(err))
-		responseWriter.WriteHeader(http.StatusBadRequest)
+	// Проверяем, что mediaType соответствует одному из разрешенных типов
+	if mediaType != "text/plain" && mediaType != "application/x-gzip" {
+		logger.Log.Info("Invalid content type",
+			zap.String("expected", "text/plain or application/x-gzip"),
+			zap.String("got", mediaType))
+		responseWriter.WriteHeader(http.StatusUnsupportedMediaType)
 		return
 	}
 
