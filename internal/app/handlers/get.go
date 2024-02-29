@@ -1,33 +1,37 @@
 package handlers
 
 import (
-	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 )
 
 // HandleGet обрабатывает GET-запросы.
-func HandleGet(w http.ResponseWriter, r *http.Request, store *stores.Store) {
-	log.Printf("Received request from: %s", r.RemoteAddr)
-	id := strings.TrimPrefix(r.URL.Path, "/")
-	log.Printf("Received ID: %s", id)
-	if id == "" {
+func HandleGet(responseWriter http.ResponseWriter, request *http.Request, store *stores.Store) {
+	log.Printf("Received request from: %s", request.RemoteAddr)
+	shortURLID := strings.TrimPrefix(request.URL.Path, "/")
+	log.Printf("Received ID: %s", shortURLID)
+
+	if shortURLID == "" {
 		log.Printf("Empty ID received, responding with BadRequest")
-		w.WriteHeader(http.StatusBadRequest)
+		responseWriter.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
-	url, ok := store.Get(id)
+	url, ok := store.Get(shortURLID)
 	log.Printf("Retrieved URL: %s, Found: %v", url, ok)
 
 	if !ok {
-		log.Printf("URL not found for ID: %s, Responding with BadRequest", id)
-		w.WriteHeader(http.StatusBadRequest)
+		log.Printf("URL not found for ID: %s, Responding with BadRequest", shortURLID)
+		responseWriter.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
-	w.Header().Set("Location", url)
-	w.WriteHeader(http.StatusTemporaryRedirect)
+	responseWriter.Header().Set("Location", url)
+	responseWriter.WriteHeader(http.StatusTemporaryRedirect)
 	log.Printf("Redirecting to: %s", url)
 }
