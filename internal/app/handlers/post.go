@@ -64,8 +64,20 @@ func HandlePost(
 
 	// Сокращение URL и его сохранение.
 	url := string(body)
-	shortURLId := store.Set(url)
-	logger.Log.Info("Short URL created", zap.String("shortURLId", shortURLId))
+	shortURLId, isNew := store.Set(url)
+
+	if isNew {
+		logger.Log.Info("New short URL created", zap.String("shortURLId", shortURLId))
+		go func() {
+			if err := store.Save(config.GetFilePath()); err != nil {
+				logger.Log.Error("Failed to save state to file", zap.Error(err))
+			} else {
+				logger.Log.Info("State saved to file", zap.String("path", config.GetFilePath()))
+			}
+		}()
+	} else {
+		logger.Log.Info("Existing short URL retrieved", zap.String("shortURLId", shortURLId))
+	}
 
 	// Формирование и отправка сокращенного URL клиенту.
 	scheme := "http"

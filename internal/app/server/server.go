@@ -4,11 +4,13 @@ package server
 
 import (
 	"fmt"
-
 	"github.com/Tarasusrus/url-shortener/internal/app/configs"
 	"github.com/Tarasusrus/url-shortener/internal/app/handlers"
 	"github.com/Tarasusrus/url-shortener/internal/app/stores"
 	"github.com/Tarasusrus/url-shortener/internal/logger"
+
+	"go.uber.org/zap"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,7 +31,14 @@ func Run() error {
 	}
 
 	store := stores.NewStore()
+	logger.Log.Info("store ok")
+	if err := store.LoadFromFile(config.FilePath); err != nil {
+		logger.Log.Error("Failed to load url from file", zap.Error(err))
+	}
+	logger.Log.Info("file load ok")
+
 	router := gin.Default()
+	logger.Log.Info("router ok")
 
 	// Регистрация middleware
 	router.Use(logger.RequestLoggerMiddleware())

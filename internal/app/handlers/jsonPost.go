@@ -42,7 +42,7 @@ func HandleJSONPost(writer gin.ResponseWriter, request *http.Request, store *sto
 		}
 	}()
 
-	shortURLId := store.Set(req.URL)
+	shortURLId, _ := store.Set(req.URL)
 	logger.Log.Info("Short URL created", zap.String("shortURLId", shortURLId))
 
 	scheme := "http"

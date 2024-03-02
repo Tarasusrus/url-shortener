@@ -4,9 +4,9 @@ package main
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/Tarasusrus/url-shortener/internal/app/server"
+
+	"os"
 )
 
 // main инициирует запуск HTTP-сервера.

@@ -24,18 +24,21 @@ type FlagConfig struct {
 	Address  string `env:"SERVER_ADDRESS"`
 	BaseURL  string `env:"BASE_URL"`
 	LogLevel string `env:"LOG_LEVEL"`
+	FilePath string `env:"FILE_STORAGE_PATH"`
 }
 
 const (
 	DefaultAddress         = "localhost:8080"
 	DefaultBaseURL         = "http://" + DefaultAddress + "/"
 	DefaultLogLevel        = "info"
+	DefaultFilePath        = "short-url-db.json"
 	AddressFlagDescription = "Флаг -a отвечает за адрес запуска HTTP-сервера " +
 		"(значение может быть таким: localhost:8888)"
 	BaseURLFlagDescription = "Флаг -b отвечает за базовый адрес результирующего сокращённого URL " +
 		"(значение: адрес сервера перед коротким URL, например http://localhost:8000/)"
 	FlagLogLevel = "Флаг -l отвечает за уровень логирования " +
 		"(допустимые значения: debug, info, warn, error, dpanic, panic, fatal)"
+	FilePathFlagDescription = "file storage path"
 )
 
 // NewFlagConfig парсинг флагов.
@@ -44,6 +47,7 @@ func NewFlagConfig() (*FlagConfig, error) {
 	flag.StringVar(&conf.Address, "a", DefaultAddress, AddressFlagDescription)
 	flag.StringVar(&conf.BaseURL, "b", DefaultBaseURL, BaseURLFlagDescription)
 	flag.StringVar(&conf.LogLevel, "l", DefaultLogLevel, FlagLogLevel)
+	flag.StringVar(&conf.FilePath, "f", DefaultFilePath, FilePathFlagDescription)
 	flag.Parse()
 
 	if err := env.Parse(conf); err != nil {
@@ -61,4 +65,7 @@ func (c *FlagConfig) GetAddress() string {
 // GetBaseURL возвращает BaseURL.
 func (c *FlagConfig) GetBaseURL() string {
 	return c.BaseURL
+}
+func (c *FlagConfig) GetFilePath() string {
+	return c.FilePath
 }
