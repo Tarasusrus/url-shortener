@@ -17,7 +17,7 @@ func TestStore_GetNonExistent(t *testing.T) {
 func TestStore_SetReturnsID(t *testing.T) {
 	store := NewStore()
 	url := "http://example.com"
-	id := store.Set(url)
+	id, _ := store.Set(url)
 	if id == "" {
 		t.Error("Expected Set to return a non-empty id")
 	}
